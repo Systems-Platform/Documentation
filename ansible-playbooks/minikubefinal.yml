@@ -4,7 +4,7 @@
    become: yes
    vars_files:
      - vars_mini.yml
-	 - vars_kube.yml
+     - vars_kube.yml
    tasks:
    - name: Creating docker repo
      file:
