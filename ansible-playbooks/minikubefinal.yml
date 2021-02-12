@@ -1,0 +1,65 @@
+---
+ - hosts: localhost
+   remote_user: root
+   become: yes
+   vars_files:
+     - vars_mini.yml
+     - vars_kube.yml
+   tasks:
+   - name: Creating docker repo
+     file:
+       path: /etc/yum.repos.d/docker.repo
+       state: touch
+   - name: Updating docker repo
+     lineinfile:
+       path: /etc/yum.repos.d/docker.repo
+       state: present
+       line: "{{ item }}"
+     with_items:
+     - '[docker-ce]'
+     - 'baseurl=https://download.docker.com/linux/centos/7/x86_64/stable/'
+     - 'gpgcheck=0'
+     
+   - name: To install docker-ce
+     command: yum install docker-ce --nobest -y
+   - name: To start docker service
+     command: systemctl start docker
+   
+   - name: To install minikube
+     get_url:
+       url: "{{ minikube_path }}"
+       dest: "{{download_folder}}/minikube-linux-amd64"
+   - name: Moving minikube
+     command: mv /opt/minikube-linux-amd64 /usr/local/bin/minikube
+   - name: Adding permission to file
+     file:
+       dest: /usr/local/bin/minikube
+       mode: a+x
+   - name: To install conntrack
+     command: yum install conntrack -y
+   - name: To validate
+     command: sed -i "s/cgroup-driver=systemd/cgroup-driver=cgroupfs/g" /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+   - name: Restarting services
+     command: systemctl daemon-reload
+     command: systemctl restart kubelet
+   - name: To start minikube
+     command: setenforce 0
+   - name: Path
+     command: cd /home/ansadmin
+     command: minikube start --driver=none
+   - name: To install kubectl
+     get_url:
+       url: "{{ vars_kube_path }}"
+       dest: "{{download_folder}}"
+   - name: Moving kubectl
+     command: mv /opt/kubectl /usr/local/bin/kubectl
+   - name: Adding permission to file
+     file:
+       dest: /usr/local/bin/kubectl
+       mode: a+x
+   - name: Running sample pod
+     command: kubectl run hello-minikube --image=gcr.io/google_containers/echoserver:1.4 --port=8080
+
+
+
+     
