@@ -1,0 +1,35 @@
+---
+ - name: Installing Newrelic
+   hosts: kube
+   remote_user: root
+   become: yes
+   tasks:
+
+   - name: Create a repo file
+     file:
+       path: /etc/newrelic-infra.yml
+       state: touch
+
+   - name: Create a repo file
+     lineinfile:
+        path: /etc/newrelic-infra.yml
+        line: "license_key: f72be26052a13eb143f6110bfb583d03c652NRAL"
+
+   - name: Download Newrelic
+     get_url:
+        url: https://download.newrelic.com/infrastructure_agent/linux/yum/el/8/x86_64/newrelic-infra.repo
+        dest: /etc/yum.repos.d/newrelic-infra.repo
+
+   - name: Modify repo configuration
+     yum_repository:
+        name: newrelic-infra
+        description: New Relic Infrastructure
+        baseurl: https://download.newrelic.com/infrastructure_agent/linux/yum/el/8/x86_64
+        gpgkey: https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg
+        gpgcheck: yes
+        repo_gpgcheck: yes
+        keepcache: yes
+        enabled: yes
+
+   - name: Newrelic Install
+     command: yum install newrelic-infra -y
