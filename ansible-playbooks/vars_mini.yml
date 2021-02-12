@@ -1,0 +1,2 @@
+minikube_path: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+download_folder: /opt
