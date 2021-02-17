@@ -26,14 +26,16 @@ Create a directory roles and files naming as ansible.cfg and hosts
 	touch ansible.cfg hosts
 	
 '''						
-Check the version of ansible as shown below
+Check the version of ansible by 
+
+       ansible --version
 
     
 '''
 Create a user named as ansadmin and give root permissions (in both controller and target server)
 '''
 
-    useradd ansadmin
+        useradd ansadmin
 	
 	passwd ansadmin
 	
@@ -45,7 +47,7 @@ Give root permissions to the user
 '''
 Enable password less authentication (in both controller and target server)
 
-    vi /etc/.ssh/sshd_config
+        vi /etc/.ssh/sshd_config
 '''
 
 '''	 
@@ -64,19 +66,19 @@ Generate ssh key by ssh-keygen
 '''
 
 Go to the path /home/ansadmin/authorized_keys/id_rsa.pub
-
+'''
 Copy the ssh key to the target servers 
 
 '''  
-    ssh-copy-id <target-server ip address>
+        ssh-copy-id <target-server ip address>
 '''		  
 	
 '''		  
 Add the ip address of target servers in the hosts
 
-    vi /etc/ansible/hosts
+        vi /etc/ansible/hosts
 		   
-		   
+'''		   
 Check the connection by 
 '''         
 	ansible all -m ping
@@ -85,7 +87,7 @@ Check the connection by
 '''		  	   
 Create a directory playbooks and write the playbooks and run by 
       
-    ansible-playbook <playbook name>
+       ansible-playbook <playbook name>
 		 
 
 
