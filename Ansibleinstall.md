@@ -35,9 +35,9 @@ Check the version of ansible by
 Create a user named as ansadmin and give root permissions (in both controller and target server)
 '''
 
-        useradd ansadmin
+         useradd ansadmin
 	
-	passwd ansadmin
+	 passwd ansadmin
 	
 Give root permissions to the user 
 
@@ -63,13 +63,11 @@ Switch to the user ansadmin
 
 Generate ssh key by ssh-keygen
 
-'''
-
 Go to the path /home/ansadmin/authorized_keys/id_rsa.pub
+
 '''
 Copy the ssh key to the target servers 
-
-'''  
+ 
         ssh-copy-id <target-server ip address>
 '''		  
 	
@@ -80,7 +78,7 @@ Add the ip address of target servers in the hosts
 		   
 '''		   
 Check the connection by 
-'''         
+         
 	ansible all -m ping
 '''
 	
@@ -88,6 +86,7 @@ Check the connection by
 Create a directory playbooks and write the playbooks and run by 
       
        ansible-playbook <playbook name>
+'''
 		 
 
 
